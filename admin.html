@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - FreshMart Grocery</title>
+    <!-- Font Awesome Icons -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    </noscript>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f4f7fa;
+            padding: 20px;
+        }
+
+        .admin-header {
+            background: #1b5e20;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header h1 {
+            font-size: 2rem;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 10px 20px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .admin-container {
+            display: grid;
+            gap: 20px;
+        }
+
+        .admin-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-section h2 {
+            color: #1b5e20;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e8f5e8;
+            padding-bottom: 10px;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .admin-table th {
+            background: #e8f5e8;
+            color: #1b5e20;
+            font-weight: 600;
+        }
+
+        .admin-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .admin-form {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .admin-form input,
+        .admin-form select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            background: #1b5e20;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #0d4a0d;
+        }
+
+        .btn-danger {
+            background: #c02b2b;
+        }
+
+        .btn-danger:hover {
+            background: #a02020;
+        }
+
+        .btn-secondary {
+            background: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #555;
+        }
+
+        .status-message {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .status-success {
+            background: #e8f5e8;
+            color: #2d6e2d;
+            border: 1px solid #c8e6c9;
+        }
+
+        .status-error {
+            background: #ffeaea;
+            color: #c02b2b;
+            border: 1px solid #f5c6c6;
+        }
+
+        .user-management {
+            margin-top: 20px;
+        }
+
+        .user-table {
+            margin-top: 15px;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .user-actions button {
+            padding: 6px 12px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-header">
+        <h1><i class="fas fa-cog"></i> Admin Dashboard</h1>
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Store</a>
+    </div>
+
+    <div class="admin-container">
+        <!-- Orders Section -->
+        <div class="admin-section">
+            <h2><i class="fas fa-shopping-cart"></i> Orders Management</h2>
+            <div id="ordersStatus"></div>
+            <table class="admin-table" id="ordersTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Customer</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Items</th>
+                        <th>Total (₹)</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                    <tr>
+                        <td colspan="6">Loading orders...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Products Management Section -->
+        <div class="admin-section">
+            <h2><i class="fas fa-box"></i> Products Management</h2>
+            <div id="productsStatus"></div>
+
+            <form id="productForm" class="admin-form">
+                <input type="hidden" id="productId" value="">
+                <div class="form-row">
+                    <input type="text" id="productName" placeholder="Product Name" required>
+                    <input type="number" id="productPrice" placeholder="Price (₹)" min="1" step="0.01" required>
+                </div>
+                <div class="form-row">
+                    <input type="text" id="productUnit" placeholder="Unit (e.g. kg, pack, litre)" required>
+                    <select id="productCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="Dairy">Dairy</option>
+                        <option value="Oils">Oils</option>
+                        <option value="Others">Others</option>
+                        <option value="Pulses">Pulses</option>
+                        <option value="Snacks">Snacks</option>
+                        <option value="Spices">Spices</option>
+                        <option value="Staples">Staples</option>
+                    </select>
+                </div>
+                <input type="url" id="productImage" placeholder="Image URL (optional if uploading file)">
+                <input type="file" id="productImageFile" accept="image/*" aria-label="Upload product image">
+                <small>Upload an image file (preferred) OR paste image URL above.</small>
+                <div class="form-actions">
+                    <button type="submit" class="btn" id="saveProductBtn">
+                        <i class="fas fa-save"></i> Save Product
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="clearProductBtn">
+                        <i class="fas fa-eraser"></i> Clear
+                    </button>
+                </div>
+            </form>
+
+            <table class="admin-table" id="productsTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Unit</th>
+                        <th>Category</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="productsTableBody">
+                    <tr>
+                        <td colspan="7">Loading products...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- User Management Section -->
+        <div class="admin-section user-management">
+            <h2><i class="fas fa-users"></i> User Management</h2>
+            <div id="usersStatus"></div>
+
+            <table class="admin-table user-table" id="usersTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Registered</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <tr>
+                        <td colspan="7">Loading users...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Data storage (in a real app, this would be a database)
+        let orders = JSON.parse(localStorage.getItem('kirana_orders') || '[]');
+        let productMaster = JSON.parse(localStorage.getItem('kirana_products') || '[]');
+        let users = JSON.parse(localStorage.getItem('kirana_users') || '[]');
+
+        // Default products if none exist
+        if (productMaster.length === 0) {
+            productMaster = [
+                { id: 1, cat: "Staples", name: "Rice", price: 80, unit: "kg", img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=200" },
+                { id: 2, cat: "Staples", name: "Wheat Flour", price: 45, unit: "kg", img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200" },
+                { id: 3, cat: "Pulses", name: "Moong Dal", price: 120, unit: "kg", img: "https://images.unsplash.com/photo-1515543904379-3d757afe72e4?w=200" },
+                { id: 4, cat: "Spices", name: "Turmeric Powder", price: 25, unit: "100g", img: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=200" },
+                { id: 5, cat: "Oils", name: "Sunflower Oil", price: 180, unit: "litre", img: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=200" },
+                { id: 6, cat: "Snacks", name: "Potato Chips", price: 20, unit: "pack", img: "https://images.unsplash.com/photo-1566479179818-1e1b1a8c6b8b?w=200" },
+                { id: 7, cat: "Dairy", name: "Milk", price: 25, unit: "litre", img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200" },
+                { id: 8, cat: "Others", name: "Tea Bags", price: 35, unit: "pack", img: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=200" }
+            ];
+            localStorage.setItem('kirana_products', JSON.stringify(productMaster));
+        }
+
+        // Default users if none exist
+        if (users.length === 0) {
+            users = [
+                { id: 1, username: 'admin', email: 'admin@freshmart.com', password: 'admin123', role: 'admin', status: 'active', registered: Date.now() },
+                { id: 2, username: 'user1234', email: 'user@example.com', password: '12345', role: 'user', status: 'active', registered: Date.now() - 86400000 }
+            ];
+            localStorage.setItem('kirana_users', JSON.stringify(users));
+        }
+
+        // DOM elements
+        const ordersTableBody = document.getElementById('ordersTableBody');
+        const productsTableBody = document.getElementById('productsTableBody');
+        const usersTableBody = document.getElementById('usersTableBody');
+        const productForm = document.getElementById('productForm');
+
+        // Initialize admin panel
+        document.addEventListener('DOMContentLoaded', function() {
+            renderOrders();
+            renderProducts();
+            renderUsers();
+        });
+
+        // Show status message
+        function showStatus(elementId, message, type = 'success') {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
+            setTimeout(() => element.innerHTML = '', 3000);
+        }
+
+        // Orders Management
+        function renderOrders() {
+            ordersTableBody.innerHTML = '';
+            if (orders.length === 0) {
+                ordersTableBody.innerHTML = '<tr><td colspan="8">No orders yet</td></tr>';
+                return;
+            }
+
+            orders.forEach((order, idx) => {
+                const row = document.createElement('tr');
+                const itemsText = order.items.map(i => `${i.name} x${i.qty}`).join(', ');
+                const date = new Date(order.date).toLocaleString();
+
+                row.innerHTML = `
+                    <td>${idx + 1}</td>
+                    <td>${order.customer || 'Guest'}</td>
+                    <td>${order.phone || '-'}</td>
+                    <td>${order.address || '-'}</td>
+                    <td>${itemsText}</td>
+                    <td>₹${order.total}</td>
+                    <td>${date}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteOrder(${idx})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+                ordersTableBody.appendChild(row);
+            });
+        }
+
+        function deleteOrder(index) {
+            if (confirm('Are you sure you want to delete this order?')) {
+                orders.splice(index, 1);
+                localStorage.setItem('kirana_orders', JSON.stringify(orders));
+                renderOrders();
+                showStatus('ordersStatus', 'Order deleted successfully');
+            }
+        }
+
+        // Products Management
+        function renderProducts() {
+            productsTableBody.innerHTML = '';
+            productMaster.forEach((prod, idx) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${idx + 1}</td>
+                    <td><img src="${prod.img}" alt="${prod.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"></td>
+                    <td>${prod.name}</td>
+                    <td>₹${prod.price}</td>
+                    <td>${prod.unit}</td>
+                    <td>${prod.cat}</td>
+                    <td>
+                        <button class="btn" onclick="editProduct(${prod.id})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteProduct(${prod.id})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+                productsTableBody.appendChild(row);
+            });
+        }
+
+        productForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const id = document.getElementById('productId').value;
+            const name = document.getElementById('productName').value.trim();
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const unit = document.getElementById('productUnit').value.trim();
+            const category = document.getElementById('productCategory').value;
+            const imageUrl = document.getElementById('productImage').value.trim();
+            const imageFile = document.getElementById('productImageFile').files[0];
+
+            if (!name || !price || !unit || !category || (!imageUrl && !imageFile)) {
+                showStatus('productsStatus', 'All fields are required (image url or upload)', 'error');
+                return;
+            }
+
+            const commitProduct = function(img) {
+                if (id) {
+                    const prod = productMaster.find(p => p.id === parseInt(id));
+                    if (prod) {
+                        prod.name = name;
+                        prod.price = price;
+                        prod.unit = unit;
+                        prod.cat = category;
+                        prod.img = img;
+                        showStatus('productsStatus', 'Product updated successfully');
+                    }
+                } else {
+                    const newId = Math.max(0, ...productMaster.map(p => p.id)) + 1;
+                    productMaster.push({ id: newId, cat: category, name, price, unit, img: img });
+                    showStatus('productsStatus', 'Product added successfully');
+                }
+
+                localStorage.setItem('kirana_products', JSON.stringify(productMaster));
+                productForm.reset();
+                document.getElementById('productId').value = '';
+                renderProducts();
+            };
+
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    commitProduct(e.target.result);
+                };
+                reader.onerror = function() {
+                    showStatus('productsStatus', 'Unable to read uploaded image', 'error');
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                commitProduct(imageUrl);
+            }
+        });
+
+        function editProduct(prodId) {
+            const prod = productMaster.find(p => p.id === prodId);
+            if (!prod) return;
+
+            document.getElementById('productId').value = prod.id;
+            document.getElementById('productName').value = prod.name;
+            document.getElementById('productPrice').value = prod.price;
+            document.getElementById('productUnit').value = prod.unit;
+            document.getElementById('productCategory').value = prod.cat;
+            document.getElementById('productImage').value = prod.img;
+            document.getElementById('productImageFile').value = '';
+
+            document.getElementById('saveProductBtn').innerHTML = '<i class="fas fa-save"></i> Update Product';
+        }
+
+        function deleteProduct(prodId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                productMaster = productMaster.filter(p => p.id !== prodId);
+                localStorage.setItem('kirana_products', JSON.stringify(productMaster));
+                renderProducts();
+                showStatus('productsStatus', 'Product deleted successfully');
+            }
+        }
+
+        document.getElementById('clearProductBtn').addEventListener('click', function() {
+            productForm.reset();
+            document.getElementById('productId').value = '';
+            document.getElementById('productImageFile').value = '';
+            document.getElementById('saveProductBtn').innerHTML = '<i class="fas fa-save"></i> Save Product';
+        });
+
+        // User Management
+        function renderUsers() {
+            usersTableBody.innerHTML = '';
+            users.forEach((user, idx) => {
+                const row = document.createElement('tr');
+                const date = new Date(user.registered).toLocaleDateString();
+                const statusClass = user.status === 'active' ? 'status-success' : 'status-error';
+
+                row.innerHTML = `
+                    <td>${idx + 1}</td>
+                    <td>${user.username}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role}</td>
+                    <td><span class="status-message ${statusClass}">${user.status}</span></td>
+                    <td>${date}</td>
+                    <td class="user-actions">
+                        <button class="btn ${user.status === 'active' ? 'btn-danger' : ''}" onclick="toggleUserStatus(${user.id})">
+                            <i class="fas fa-${user.status === 'active' ? 'ban' : 'check'}"></i> ${user.status === 'active' ? 'Deactivate' : 'Activate'}
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteUser(${user.id})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+                usersTableBody.appendChild(row);
+            });
+        }
+
+        function toggleUserStatus(userId) {
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+
+            user.status = user.status === 'active' ? 'inactive' : 'active';
+            localStorage.setItem('kirana_users', JSON.stringify(users));
+            renderUsers();
+            showStatus('usersStatus', `User ${user.status === 'active' ? 'activated' : 'deactivated'} successfully`);
+        }
+
+        function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+                users = users.filter(u => u.id !== userId);
+                localStorage.setItem('kirana_users', JSON.stringify(users));
+                renderUsers();
+                showStatus('usersStatus', 'User deleted successfully');
+            }
+        }
+
+        // Auto-save data periodically
+        setInterval(() => {
+            localStorage.setItem('kirana_orders', JSON.stringify(orders));
+            localStorage.setItem('kirana_products', JSON.stringify(productMaster));
+            localStorage.setItem('kirana_users', JSON.stringify(users));
+        }, 30000); // Save every 30 seconds
+    </script>
+</body>
+
+</html>

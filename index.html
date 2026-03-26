@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>FreshBasket – Fresh Grocery Delivered</title>
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #fef9ef 0%, #fff9f0 100%);
+            padding-bottom: 100px;
+            margin: 0;
+            scroll-behavior: smooth;
+        }
+
+        /* Fresh & Vibrant Color Scheme */
+        :root {
+            --fresh-green: #2e7d32;
+            --fresh-light: #60ad5e;
+            --fresh-mint: #e8f5e9;
+            --warm-peach: #ffb74d;
+            --sunset-orange: #ff8c42;
+            --earth-brown: #5d4037;
+            --cream-bg: #fff8ed;
+            --card-white: #ffffff;
+            --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            --shadow-hover: 0 20px 35px -12px rgba(46, 125, 50, 0.2);
+            --radius-xl: 28px;
+            --radius-md: 20px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-bottom: 110px;
+            }
+        }
+
+        /* Header - Clean & Welcoming */
+        .header {
+            background: var(--cream-bg);
+            color: var(--earth-brown);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            border-bottom: 2px solid rgba(96, 173, 94, 0.25);
+        }
+
+        .header-top {
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--fresh-green);
+            font-size: 1.6rem;
+            cursor: pointer;
+            padding: 8px;
+            transition: transform 0.2s;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        .header-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            flex: 1;
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .brand h1 {
+            font-size: 1.55rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2e7d32 0%, #ffb74d 70%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        .brand p {
+            font-size: 0.75rem;
+            color: #8b6b4d;
+            font-weight: 500;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: rgba(255, 248, 225, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 60px;
+            padding: 4px 10px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 78px;
+                left: 16px;
+                right: 16px;
+                background: #ffffff;
+                flex-direction: column;
+                gap: 8px;
+                padding: 24px;
+                border-radius: 32px;
+                box-shadow: 0 25px 40px rgba(0, 0, 0, 0.12);
+                border: 1px solid rgba(46, 125, 50, 0.2);
+            }
+            .nav-menu.active {
+                display: flex;
+            }
+        }
+
+        .nav-item {
+            color: var(--earth-brown);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 50px;
+            transition: all 0.25s ease;
+            font-size: 0.9rem;
+        }
+
+        .nav-item i {
+            margin-right: 8px;
+            color: var(--fresh-light);
+        }
+
+        .nav-item:hover {
+            background: var(--fresh-mint);
+            color: var(--fresh-green);
+            transform: translateY(-2px);
+        }
+
+        .login-btn {
+            background: linear-gradient(110deg, #2e7d32, #4caf50);
+            color: white;
+            border: none;
+            border-radius: 60px;
+            padding: 10px 24px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
+            font-size: 0.85rem;
+        }
+
+        .login-btn:hover {
+            transform: scale(0.97);
+            background: linear-gradient(110deg, #256f28, #3e9a41);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Category Pills - Fun & Colorful */
+        .category-strip {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 16px 24px;
+            background: transparent;
+            scrollbar-width: thin;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .cat-pill {
+            background: white;
+            color: #5d4037;
+            padding: 10px 26px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.25s;
+            border: 1px solid rgba(46, 125, 50, 0.15);
+        }
+
+        .cat-pill:hover {
+            background: var(--fresh-mint);
+            border-color: var(--fresh-light);
+            transform: translateY(-3px);
+        }
+
+        .cat-pill.active {
+            background: var(--fresh-green);
+            color: white;
+            border-color: var(--fresh-green);
+            box-shadow: 0 8px 18px rgba(46, 125, 50, 0.3);
+        }
+
+        /* Search Bar */
+        .search-box {
+            padding: 12px 24px 20px;
+            background: transparent;
+            display: flex;
+            gap: 12px;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 16px 24px;
+            border: 2px solid #ffe0b5;
+            border-radius: 60px;
+            font-size: 1rem;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            transition: all 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--warm-peach);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(255, 183, 77, 0.2);
+        }
+
+        .search-box button {
+            background: var(--warm-peach);
+            color: #4a2e1e;
+            border: none;
+            padding: 0 32px;
+            border-radius: 60px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .search-box button:hover {
+            background: var(--sunset-orange);
+            transform: scale(0.97);
+            color: white;
+        }
+
+        /* Product Grid - Fresh Cards */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 24px;
+            padding: 20px 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 550px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 900px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (min-width: 1200px) {
+            .product-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .product-card {
+            background: var(--card-white);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.35s cubic-bezier(0.2, 0, 0, 1);
+            border: 1px solid rgba(255, 204, 128, 0.4);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--fresh-light);
+        }
+
+        .product-img {
+            position: relative;
+            width: 100%;
+            padding-top: 70%;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        .product-img img,
+        .product-img .product-icon {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-img img {
+            object-fit: contain;
+            padding: 16px;
+        }
+
+        .product-img .product-icon {
+            font-size: 3.8rem;
+            background: #ffffff;
+            color: var(--fresh-green);
+        }
+
+        .product-info {
+            padding: 18px 16px 20px;
+        }
+
+        .product-title {
+            font-weight: 800;
+            font-size: 1rem;
+            margin-bottom: 6px;
+            color: #2d3e2b;
+            line-height: 1.3;
+        }
+
+        .product-price {
+            font-weight: 800;
+            color: var(--fresh-green);
+            font-size: 1.3rem;
+            margin: 8px 0 12px;
+        }
+
+        .price-unit {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #b97f49;
+        }
+
+        .qty-selector {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff2e2;
+            border-radius: 60px;
+            padding: 5px;
+            margin: 12px 0 10px;
+        }
+
+        .qty-btn {
+            background: white;
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--fresh-green);
+            transition: 0.1s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .qty-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .add-btn {
+            background: linear-gradient(95deg, #2e7d32, #4caf50);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 60px;
+            width: 100%;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .add-btn:hover {
+            background: linear-gradient(95deg, #256f28, #3e9a41);
+            transform: scale(0.98);
+        }
+
+        .buy-btn {
+            background: linear-gradient(95deg, #ff8c42, #ffad5a);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50px;
+            width: 100%;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .buy-btn:hover {
+            background: linear-gradient(95deg, #e1732f, #f79246);
+            transform: scale(0.98);
+        }
+
+        /* Cart Footer - Sticky & Modern */
+        .cart-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 252, 245, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 14px 24px;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 2px solid var(--warm-peach);
+            z-index: 99;
+        }
+
+        .cart-summary {
+            font-weight: 700;
+            background: var(--fresh-mint);
+            padding: 8px 22px;
+            border-radius: 60px;
+            color: var(--fresh-green);
+            font-size: 0.95rem;
+        }
+
+        .whatsapp-btn {
+            background: #25d366;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.3);
+            transition: 0.2s;
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(0.97);
+            background: #20b859;
+        }
+
+        .clear-cart {
+            background: #ffe0d4;
+            color: #c44f2c;
+            border: none;
+            border-radius: 60px;
+            padding: 8px 22px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .clear-cart:hover {
+            background: #ffcebc;
+        }
+
+        .no-result {
+            text-align: center;
+            padding: 70px 20px;
+            color: #c4925e;
+            font-weight: 500;
+            grid-column: 1/-1;
+            font-size: 1.1rem;
+        }
+
+        /* Footer - Earthy & Cozy */
+        .footer {
+            background: #2c3e2b;
+            color: #f9efda;
+            padding: 48px 28px 100px;
+            margin-top: 70px;
+            border-radius: 40px 40px 0 0;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-section h3 {
+            color: #ffd89a;
+            font-size: 1.2rem;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 18px;
+        }
+
+        .social-btn {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #487a3a;
+            color: white;
+            transition: 0.25s;
+            text-decoration: none;
+            font-size: 1.3rem;
+        }
+
+        .social-btn:hover {
+            transform: scale(1.08);
+            background: #ffae70;
+        }
+
+        .cat-badge {
+            background: #5b854a;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            display: inline-block;
+            margin: 4px 5px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 48px;
+            width: 100%;
+            max-width: 460px;
+            padding: 32px 28px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.25);
+            animation: slideUpModal 0.3s ease;
+        }
+
+        #cartItemsList {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            border-top: 2px solid #2e7d32;
+        }
+
+        .admin-mini-login {
+            display: none;
+            position: absolute;
+            z-index: 999;
+            min-width: 260px;
+            background: #fff;
+            border: 1px solid #c4d2c0;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            user-select: none;
+        }
+
+        .admin-mini-login h4 {
+            margin: 0 0 8px;
+            font-size: 0.9rem;
+            color: #1b5e20;
+        }
+
+        .admin-mini-login .form-group input {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid #d7e6d7;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .admin-mini-login .submit-btn {
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .user-mini-login {
+            display: none;
+            position: absolute;
+            z-index: 999;
+            min-width: 260px;
+            background: #fff;
+            border: 1px solid #c4d2c0;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            user-select: none;
+        }
+
+        .user-mini-login h4 {
+            margin: 0 0 8px;
+            font-size: 0.9rem;
+            color: #2e7d32;
+        }
+
+        .user-mini-login .form-group input {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid #d7e6d7;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .user-mini-login .submit-btn {
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        @keyframes slideUpModal {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 60px;
+            border: 1.5px solid #f0e0c8;
+            background: #fffcf5;
+            font-size: 0.95rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--warm-peach);
+        }
+
+        .submit-btn {
+            background: var(--fresh-green);
+            border-radius: 60px;
+            padding: 14px;
+            font-weight: bold;
+            color: white;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #236b2c;
+            transform: scale(0.98);
+        }
+
+        .form-toggle {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .form-toggle a {
+            color: var(--sunset-orange);
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #a17f5a;
+            transition: 0.2s;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-top">
+        <button class="menu-toggle" id="menuToggle"><i class="fas fa-seedling"></i></button>
+        <div class="header-wrapper">
+            <div class="brand">
+                <h1><i class="fas fa-basket-shopping"></i> FreshBasket</h1>
+                <p>🌿 farm-fresh · happiness delivered</p>
+            </div>
+            <nav class="nav-menu" id="navMenu">
+                <a href="#" class="nav-item" onclick="scrollToShop(); closeMobileMenu()"><i class="fas fa-store"></i> Shop</a>
+                <a href="#" class="nav-item" onclick="showAbout(); closeMobileMenu()"><i class="fas fa-leaf"></i> Story</a>
+                <a href="#" class="nav-item" onclick="showContact(); closeMobileMenu()"><i class="fas fa-headset"></i> Support</a>
+                <a href="#" class="nav-item" onclick="showCartInfo(); closeMobileMenu()"><i class="fas fa-cart-shopping"></i> Cart <span id="headerCartCount" style="background:#ffeb3b; color:#1b5e20; border-radius:999px; padding:2px 8px; font-size:0.75rem; margin-left:6px;">0</span></a>
+                <a href="#" id="adminLink" class="nav-item"><i class="fas fa-chart-line"></i> Admin</a>
+            </nav>
+            <div id="adminMiniLogin" class="admin-mini-login" aria-live="polite" aria-label="Admin login shortcut">
+                <h4>Admin login</h4>
+                <form id="adminMiniForm" autocomplete="off">
+                    <div class="form-group"><input type="text" id="adminMiniUser" placeholder="User ID" required></div>
+                    <div class="form-group"><input type="password" id="adminMiniPass" placeholder="Password" required></div>
+                    <button type="submit" class="submit-btn">Go</button>
+                </form>
+            </div>
+            <div id="userMiniLogin" class="user-mini-login" aria-live="polite" aria-label="User login shortcut">
+                <h4>User login</h4>
+                <form id="userMiniForm" autocomplete="off">
+                    <div class="form-group"><input type="text" id="userMiniEmail" placeholder="Email / Mobile" required></div>
+                    <div class="form-group"><input type="password" id="userMiniPass" placeholder="Password" required></div>
+                    <button type="submit" class="submit-btn">Login</button>
+                </form>
+                <div class="form-toggle" style="text-align: center; margin-top: 8px; font-size: 0.8rem;"><a onclick="toggleAuthForms(); hideUserMini(); authModalDiv.classList.add('active');">Register</a></div>
+            </div>
+        </div>
+        <button class="login-btn" id="loginBtn"><i class="fas fa-user-plus"></i> Account</button>
+    </div>
+    <div class="category-strip" id="categoryPills"></div>
+</div>
+
+<!-- Auth Modal -->
+<div class="modal" id="authModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle" style="color:#2e7d32;">Welcome back</h2>
+            <button class="close-btn" id="closeModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-section active" id="loginFormSection">
+                <form id="loginForm" onsubmit="handleUserLogin(event)">
+                    <div class="form-group"><input type="text" id="loginEmailInput" placeholder="Email / Mobile" required></div>
+                    <div class="form-group"><input type="password" id="loginPasswordInput" placeholder="Password" required></div>
+                    <button type="submit" class="submit-btn"><i class="fas fa-arrow-right-to-bracket"></i> Login</button>
+                </form>
+                <div class="form-toggle">New here? <a onclick="toggleAuthForms()">Create free account</a></div>
+            </div>
+            <div class="form-section" id="registerFormSection">
+                <form id="registerForm" onsubmit="handleUserRegister(event)">
+                    <div class="form-group"><input type="text" id="regFullName" placeholder="Full name" required></div>
+                    <div class="form-group"><input type="email" id="regEmailId" placeholder="Email address" required></div>
+                    <div class="form-group"><input type="tel" id="regPhoneNum" placeholder="Phone number" required></div>
+                    <div class="form-group"><input type="text" id="regAddressLine" placeholder="Delivery address" required></div>
+                    <div class="form-group"><input type="password" id="regPasswordVal" placeholder="Password" required></div>
+                    <div class="form-group"><input type="password" id="regConfirmPass" placeholder="Confirm password" required></div>
+                    <button type="submit" class="submit-btn"><i class="fas fa-user-check"></i> Register & Enjoy</button>
+                </form>
+                <div class="form-toggle">Already have account? <a onclick="toggleAuthForms()">Sign in</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="search-box">
+    <input type="text" id="searchInput" placeholder="🔍 Search for organic rice, spices, fresh dairy..." autocomplete="off">
+    <button id="searchBtn"><i class="fas fa-search"></i> Search</button>
+</div>
+
+<div id="productList" class="product-grid"></div>
+
+<div class="cart-footer">
+    <div class="cart-summary" id="cartSummary">🛒 0 items</div>
+    <div style="display: flex; gap: 12px;">
+        <button class="clear-cart" id="clearCartBtn" style="display:none;"><i class="fas fa-trash-alt"></i> Clear</button>
+        <button class="whatsapp-btn" id="whatsappOrderBtn"><i class="fab fa-whatsapp"></i> Order Now</button>
+    </div>
+</div>
+
+<!-- Buy modal -->
+<div class="modal" id="buyModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Order details</h2>
+            <button class="close-btn" id="closeBuyModal">&times;</button>
+        </div>
+        <form id="buyForm">
+            <div class="form-group"><input type="text" id="buyerName" placeholder="Your name" required></div>
+            <div class="form-group"><input type="tel" id="buyerPhone" placeholder="Contact phone" required></div>
+            <div class="form-group"><input type="text" id="buyerAddress" placeholder="Delivery address" required></div>
+            <div class="form-group"><input type="number" id="buyerQuantity" placeholder="Quantity" min="1" required></div>
+            <div class="form-group"><input type="text" id="buyerPrice" placeholder="Unit price" readonly></div>
+            <div class="form-group"><input type="text" id="buyerTotal" placeholder="Total price" readonly></div>
+            <button type="submit" class="submit-btn">Place order</button>
+        </form>
+    </div>
+</div>
+
+<!-- Cart modal -->
+<div class="modal" id="cartModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Your Cart</h2>
+            <button class="close-btn" id="closeCartModal">&times;</button>
+        </div>
+        <div id="cartItemsList"></div>
+        <div class="cart-total">
+            <strong>Total: ₹<span id="cartTotalAmount">0</span></strong>
+        </div>
+        <button class="submit-btn" id="cartBuyBtn">Buy Now</button>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-section"><h3><i class="fas fa-map-pin"></i> FreshBazaar</h3><p>📍 45, Green Avenue, Mumbai - 400054</p><p>📞 +91 62656 40804</p><p>✉️ hello@freshbasket.com</p></div>
+        <div class="footer-section"><h3><i class="fas fa-tags"></i> Shop by Category</h3><div id="footerCatList" style="display: flex; flex-wrap: wrap; gap: 6px;"></div></div>
+        <div class="footer-section"><h3><i class="fas fa-clock"></i> Delivery Hours</h3><p>Everyday: 8:00 AM – 9:00 PM</p><p>🚚 Free delivery above ₹299</p></div>
+        <div class="footer-section"><h3><i class="fas fa-share-alt"></i> Connect</h3><div class="social-links"><a href="#" id="fbSocial" class="social-btn"><i class="fab fa-facebook-f"></i></a><a href="#" id="twitterSocial" class="social-btn"><i class="fab fa-x-twitter"></i></a><a href="#" id="waSocial" class="social-btn"><i class="fab fa-whatsapp"></i></a></div></div>
+    </div>
+    <div style="text-align: center; margin-top: 38px; font-size: 0.8rem;">© 2026 FreshBasket — Pure & Local Goodness ♥</div>
+</footer>
+
+<script>
+    // ---------------------------- PRODUCT MASTER ----------------------------
+    const PRODUCTS_KEY = 'kirana_products';
+    const ORDERS_KEY = 'kirana_orders';
+    const CART_KEY = 'kirana_cart';
+
+    let productDatabase = JSON.parse(localStorage.getItem(PRODUCTS_KEY) || localStorage.getItem('freshmart_products') || '[]');
+    const defaultProductSet = [
+        { c:"Staples", n:"Organic Basmati Rice", p:135, u:"kg", i:"https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&auto=format&fit=crop" },
+        { c:"Staples", n:"Whole Wheat Atta", p:52, u:"kg", i:"https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600&auto=format&fit=crop" },
+        { c:"Staples", n:"Toor Dal (Premium)", p:108, u:"kg", i:"https://images.unsplash.com/photo-1587391367401-11c24861987a?w=600&auto=format&fit=crop" },
+        { c:"Pulses", n:"Masoor Dal (Red)", p:92, u:"kg", i:"https://images.unsplash.com/photo-1524594157367-ff7c156c1465?w=600&auto=format&fit=crop" },
+        { c:"Pulses", n:"Kashmiri Rajma", p:122, u:"kg", i:"https://images.unsplash.com/photo-1598970434795-0c54fe7c0642?w=600&auto=format&fit=crop" },
+        { c:"Spices", n:"Turmeric Powder", p:48, u:"250g", i:"https://images.unsplash.com/photo-1617196039623-c446692a5bb3?w=600&auto=format&fit=crop" },
+        { c:"Spices", n:"Coriander Powder", p:55, u:"250g", i:"https://images.unsplash.com/photo-1604908813299-aecab91a5ddf?w=600&auto=format&fit=crop" },
+        { c:"Spices", n:"Garam Masala", p:85, u:"100g", i:"https://images.unsplash.com/photo-1600891964599-f61ba0e24092?w=600&auto=format&fit=crop" },
+        { c:"Oils", n:"Cold-pressed Coconut Oil", p:195, u:"500ml", i:"https://images.unsplash.com/photo-1566803487178-eba3d90a2ae6?w=600&auto=format&fit=crop" },
+        { c:"Oils", n:"Pure Cow Ghee", p:525, u:"kg", i:"https://images.unsplash.com/photo-1601050696818-35079381f968?w=600&auto=format&fit=crop" },
+        { c:"Snacks", n:"Multigrain Khakhra", p:42, u:"pack", i:"https://images.unsplash.com/photo-1593867312570-5a81ce8ac3de?w=600&auto=format&fit=crop" },
+        { c:"Snacks", n:"Roasted Foxnuts", p:99, u:"pack", i:"https://images.unsplash.com/photo-1612197529310-04f56bbf4030?w=600&auto=format&fit=crop" },
+        { c:"Dairy", n:"Fresh A2 Milk", p:68, u:"L", i:"https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&auto=format&fit=crop" },
+        { c:"Dairy", n:"Paneer Cubes", p:145, u:"250g", i:"https://images.unsplash.com/photo-1611078489311-4f58e7b4cf6f?w=600&auto=format&fit=crop" },
+        { c:"Others", n:"Raw Honey", p:210, u:"500g", i:"https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=600&auto=format&fit=crop" },
+        { c:"Others", n:"Assam Tea Leaves", p:155, u:"250g", i:"https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&auto=format&fit=crop" },
+        { c:"Staples", n:"Brown Rice", p:125, u:"kg", i:"https://images.unsplash.com/photo-1522770179533-24471fcdba45?w=600&auto=format&fit=crop" },
+        { c:"Spices", n:"Red Chilli Powder", p:68, u:"250g", i:"https://images.unsplash.com/photo-1611695220695-3d6178fa7f06?w=600&auto=format&fit=crop" },
+        { c:"Snacks", n:"Baked Bhujia", p:48, u:"pack", i:"https://images.unsplash.com/photo-1608366111103-120c810e0d65?w=600&auto=format&fit=crop" },
+        { c:"Oils", n:"Mustard Oil", p:115, u:"L", i:"https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&auto=format&fit=crop" },
+        { c:"Pulses", n:"Chana Dal", p:82, u:"kg", i:"https://images.unsplash.com/photo-1608007778946-75fc7eddd727?w=600&auto=format&fit=crop" },
+        { c:"Dairy", n:"Greek Yogurt", p:88, u:"400g", i:"https://images.unsplash.com/photo-1572441710462-04746a4d15f8?w=600&auto=format&fit=crop" },
+        { c:"Staples", n:"Quinoa", p:225, u:"kg", i:"https://images.unsplash.com/photo-1473093226795-af9932fe5856?w=600&auto=format&fit=crop" },
+        { c:"Spices", n:"Cumin Seeds", p:95, u:"250g", i:"https://images.unsplash.com/photo-1604910614839-42fa78a86172?w=600&auto=format&fit=crop" }
+    ];
+    if(productDatabase.length === 0){
+        let idx=0;
+        for(let prod of defaultProductSet){
+            productDatabase.push({ id:idx++, cat:prod.c, name:prod.n, price:prod.p, unit:prod.u, img:prod.i });
+        }
+        localStorage.setItem(PRODUCTS_KEY, JSON.stringify(productDatabase));
+    }
+    
+    let allCategories = ['All', ...new Set(productDatabase.map(p => p.cat))].sort();
+    let currentCategory = 'All';
+    let currentSearch = '';
+    let shoppingCart = new Map(JSON.parse(localStorage.getItem(CART_KEY) || '[]'));
+    let loggedIn = false;
+    let isAdminMode = false;
+    let adminHoverMode = false;
+    
+    // DOM Elements
+    const categoryContainer = document.getElementById('categoryPills');
+    const productGrid = document.getElementById('productList');
+    const cartSummarySpan = document.getElementById('cartSummary');
+    const headerCartCount = document.getElementById('headerCartCount');
+    const clearCartBtnDom = document.getElementById('clearCartBtn');
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchBtn');
+    const whatsappOrder = document.getElementById('whatsappOrderBtn');
+    const authModalDiv = document.getElementById('authModal');
+    const loginBtnHeader = document.getElementById('loginBtn');
+    const closeModalBtn = document.getElementById('closeModal');
+    const adminLink = document.getElementById('adminLink');
+    const adminMiniLogin = document.getElementById('adminMiniLogin');
+    const adminMiniForm = document.getElementById('adminMiniForm');
+    const adminMiniUser = document.getElementById('adminMiniUser');
+    const adminMiniPass = document.getElementById('adminMiniPass');
+    const userMiniLogin = document.getElementById('userMiniLogin');
+    const userMiniForm = document.getElementById('userMiniForm');
+    const userMiniEmail = document.getElementById('userMiniEmail');
+    const userMiniPass = document.getElementById('userMiniPass');
+    const buyModal = document.getElementById('buyModal');
+    const closeBuyModalBtn = document.getElementById('closeBuyModal');
+    const buyForm = document.getElementById('buyForm');
+    const buyerNameInput = document.getElementById('buyerName');
+    const buyerPhoneInput = document.getElementById('buyerPhone');
+    const buyerAddressInput = document.getElementById('buyerAddress');
+    const buyerQuantityInput = document.getElementById('buyerQuantity');
+    const buyerPriceInput = document.getElementById('buyerPrice');
+    const buyerTotalInput = document.getElementById('buyerTotal');
+    const cartModal = document.getElementById('cartModal');
+    const closeCartModalBtn = document.getElementById('closeCartModal');
+    const cartItemsList = document.getElementById('cartItemsList');
+    const cartTotalAmount = document.getElementById('cartTotalAmount');
+    const cartBuyBtn = document.getElementById('cartBuyBtn');
+    let activeBuyProductId = null;
+    let currentUserName = '';
+
+    
+    // Helper Functions
+    function updateClearButtonVisibility(){ clearCartBtnDom.style.display = shoppingCart.size > 0 ? 'block' : 'none'; }
+    function updateCartTotalUI(){ let totalItems=0; for(let val of shoppingCart.values()) totalItems+=val.qty; cartSummarySpan.innerHTML = `🛒 ${totalItems} item${totalItems!==1?'s':''}`; if(headerCartCount) headerCartCount.innerText = totalItems; updateClearButtonVisibility(); }
+
+    function openBuyModal(product){
+        if(!product) return;
+        activeBuyProductId = product.id;
+        buyerNameInput.value = '';
+        buyerPhoneInput.value = '';
+        buyerAddressInput.value = '';
+        buyerQuantityInput.value = 1;
+        buyerPriceInput.value = `₹${product.price}`;
+        buyerTotalInput.value = `₹${product.price}`;
+        buyModal.classList.add('active');
+    }
+
+    function closeBuyModal(){
+        activeBuyProductId = null;
+        buyModal.classList.remove('active');
+    }
+
+    function openCartModal(){
+        renderCartItems();
+        cartModal.classList.add('active');
+    }
+
+    function closeCartModal(){
+        cartModal.classList.remove('active');
+    }
+
+    function renderCartItems(){
+        if(shoppingCart.size === 0){
+            cartItemsList.innerHTML = '<p>Your cart is empty.</p>';
+            cartTotalAmount.innerText = '0';
+            return;
+        }
+        let html = '';
+        let total = 0;
+        for(let item of shoppingCart.values()){
+            const itemTotal = item.price * item.qty;
+            total += itemTotal;
+            html += `
+                <div class="cart-item">
+                    <div>
+                        <strong>${item.name}</strong><br>
+                        ₹${item.price} x ${item.qty}
+                    </div>
+                    <div>₹${itemTotal}</div>
+                </div>
+            `;
+        }
+        cartItemsList.innerHTML = html;
+        cartTotalAmount.innerText = total;
+    }
+
+    function updateBuyTotal(){
+        const qty = Number(buyerQuantityInput.value) || 1;
+        const product = productDatabase.find(p => p.id === activeBuyProductId);
+        if(!product) return;
+        const total = product.price * qty;
+        buyerTotalInput.value = `₹${total.toFixed(2)}`;
+    }
+
+    function saveDirectOrder(){
+        const qty = Number(buyerQuantityInput.value);
+        const name = buyerNameInput.value.trim();
+        const phone = buyerPhoneInput.value.trim();
+        const address = buyerAddressInput.value.trim();
+        const product = productDatabase.find(p => p.id === activeBuyProductId);
+        if(!product || qty < 1 || !name || !phone || !address){
+            alert('Please complete all order fields.');
+            return;
+        }
+        const order = {
+            id: Date.now(),
+            customer: name,
+            phone,
+            address,
+            items: [{ id: product.id, name: product.name, qty, unitPrice: product.price, total: product.price * qty }],
+            total: product.price * qty,
+            date: new Date().toISOString()
+        };
+        const orderHistory = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
+        orderHistory.unshift(order);
+        localStorage.setItem(ORDERS_KEY, JSON.stringify(orderHistory));
+        alert(`🎉 Order confirmed for ${name}. Total: ₹${order.total.toFixed(2)}`);
+        closeBuyModal();
+    }
+    
+    function getFilteredProducts(){
+        const term = currentSearch.toLowerCase();
+        return productDatabase.filter(p => (currentCategory === 'All' || p.cat === currentCategory) && (term === '' || p.name.toLowerCase().includes(term) || p.cat.toLowerCase().includes(term)));
+    }
+    
+    function renderCategoriesUI(){
+        let html = '';
+        allCategories.forEach(c => { html += `<span class="cat-pill ${currentCategory === c ? 'active' : ''}" data-category="${c}">${c}</span>`; });
+        categoryContainer.innerHTML = html;
+        const footerCatDiv = document.getElementById('footerCatList');
+        if(footerCatDiv) footerCatDiv.innerHTML = allCategories.slice(0,7).map(c => `<span class="cat-badge">${c}</span>`).join('');
+    }
+    
+    function renderProductsGrid(){
+        const filtered = getFilteredProducts();
+        if(filtered.length === 0){ productGrid.innerHTML = `<div class="no-result"><i class="fas fa-seedling"></i> No items found — try another keyword!</div>`; return; }
+        const fragment = document.createDocumentFragment();
+        filtered.forEach(prod => {
+            const qtyNow = shoppingCart.get(prod.id)?.qty || 0;
+            const isUrlImage = prod.img && (prod.img.startsWith('http') || prod.img.startsWith('https') || prod.img.startsWith('data:image'));
+            const imageHtml = isUrlImage ? `<img src="${prod.img}" alt="${prod.name}" loading="lazy">` : `<img src="https://via.placeholder.com/400x300?text=${encodeURIComponent(prod.name)}" alt="${prod.name}" loading="lazy">`;
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'product-card';
+            cardDiv.innerHTML = `
+                <div class="product-img">${imageHtml}</div>
+                <div class="product-info">
+                    <div class="product-title">${prod.name}</div>
+                    <div class="product-price">₹${prod.price} <span class="price-unit">/${prod.unit}</span></div>
+                    <div class="qty-selector">
+                        <button class="qty-btn decr" data-pid="${prod.id}">−</button>
+                        <span class="qty-value" id="qtyVal-${prod.id}">${qtyNow}</span>
+                        <button class="qty-btn incr" data-pid="${prod.id}">+</button>
+                    </div>
+                    <button class="add-btn" data-pid="${prod.id}"><i class="fas fa-bag-shopping"></i> Add to cart</button>
+                    <button class="buy-btn" data-pid="${prod.id}"><i class="fas fa-credit-card"></i> Buy Now</button>
+                </div>
+            `;
+            fragment.appendChild(cardDiv);
+        });
+        productGrid.innerHTML = '';
+        productGrid.appendChild(fragment);
+    }
+    
+    function updateCartQuantity(prodId, delta){
+        const productItem = productDatabase.find(p => p.id == prodId);
+        if(!productItem) return;
+        const existing = shoppingCart.get(prodId);
+        if(!existing && delta > 0) shoppingCart.set(prodId, { qty: delta, name: productItem.name, price: productItem.price });
+        else if(existing){
+            const newQ = existing.qty + delta;
+            if(newQ <= 0) shoppingCart.delete(prodId);
+            else shoppingCart.set(prodId, { ...existing, qty: newQ });
+        }
+        const qtySpan = document.getElementById(`qtyVal-${prodId}`);
+        if(qtySpan) qtySpan.innerText = shoppingCart.get(prodId)?.qty || 0;
+        updateCartTotalUI();
+        localStorage.setItem(CART_KEY, JSON.stringify(Array.from(shoppingCart)));
+    }
+    
+    function generateWhatsAppText(){
+        if(shoppingCart.size === 0) return null;
+        let orderLines = ["🛍️ *FreshBasket Order* 🛍️", ""];
+        let totalAmount = 0;
+        for(let item of shoppingCart.values()){
+            const cost = item.price * item.qty;
+            totalAmount += cost;
+            orderLines.push(`• ${item.name} x${item.qty} = ₹${cost}`);
+        }
+        orderLines.push("", `💰 *Total: ₹${totalAmount}*`, "🚚 Delivery in 30-45 mins", "Thank you for choosing FreshBasket!");
+        return encodeURIComponent(orderLines.join('\n'));
+    }
+    
+    function saveOrderHistory(){
+        if(shoppingCart.size === 0) return;
+        const orderRecord = { customer: loggedIn ? "Registered User" : "Guest", items: Array.from(shoppingCart.values()), total: Array.from(shoppingCart.values()).reduce((s,i)=>s+(i.qty*i.price),0), timestamp: Date.now(), date: new Date().toISOString() };
+        let pastOrders = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
+        pastOrders.unshift(orderRecord);
+        localStorage.setItem(ORDERS_KEY, JSON.stringify(pastOrders));
+        shoppingCart.clear();
+        localStorage.setItem(CART_KEY, JSON.stringify(Array.from(shoppingCart)));
+        renderProductsGrid();
+        updateCartTotalUI();
+        updateClearButtonVisibility();
+        alert('✅ Order saved! Redirecting to WhatsApp for confirmation.');
+    }
+    
+    // Buy modal listeners
+    closeBuyModalBtn?.addEventListener('click', () => closeBuyModal());
+    buyModal?.addEventListener('click', (e) => { if(e.target === buyModal) closeBuyModal(); });
+    buyerQuantityInput?.addEventListener('input', updateBuyTotal);
+    buyForm?.addEventListener('submit', function(e){ e.preventDefault(); saveDirectOrder(); });
+
+    // Cart modal listeners
+    closeCartModalBtn?.addEventListener('click', () => closeCartModal());
+    cartModal?.addEventListener('click', (e) => { if(e.target === cartModal) closeCartModal(); });
+    cartBuyBtn?.addEventListener('click', () => {
+        if(shoppingCart.size === 0){ alert('Your cart is empty!'); return; }
+        const waMessage = generateWhatsAppText();
+        if(waMessage){ window.open(`https://wa.me/916265640804?text=${waMessage}`, '_blank'); saveOrderHistory(); closeCartModal(); }
+    });
+
+    // Event Listeners
+    productGrid.addEventListener('click', (e) => {
+        const buyBtn = e.target.closest('.buy-btn');
+        if(buyBtn){
+            const pid = parseInt(buyBtn.getAttribute('data-pid'));
+            openBuyModal(productDatabase.find(p => p.id === pid));
+            return;
+        }
+        const targetBtn = e.target.closest('.incr, .decr, .add-btn');
+        if(targetBtn){
+            const pid = parseInt(targetBtn.getAttribute('data-pid'));
+            if(targetBtn.classList.contains('incr') || targetBtn.classList.contains('add-btn')) updateCartQuantity(pid, 1);
+            else if(targetBtn.classList.contains('decr')) updateCartQuantity(pid, -1);
+        }
+    });
+    
+    categoryContainer.addEventListener('click', (e) => {
+        const catPill = e.target.closest('.cat-pill');
+        if(catPill){
+            currentCategory = catPill.getAttribute('data-category');
+            renderCategoriesUI();
+            renderProductsGrid();
+        }
+    });
+    
+    searchButton.addEventListener('click', () => { currentSearch = searchInput.value.trim(); currentCategory = 'All'; renderCategoriesUI(); renderProductsGrid(); });
+    searchInput.addEventListener('keyup', (e) => { if(e.key === 'Enter') searchButton.click(); });
+    clearCartBtnDom.addEventListener('click', () => { shoppingCart.clear(); renderProductsGrid(); updateCartTotalUI(); updateClearButtonVisibility(); localStorage.setItem(CART_KEY, JSON.stringify(Array.from(shoppingCart))); });
+    whatsappOrder.addEventListener('click', () => {
+        if(shoppingCart.size === 0){ alert('🛒 Your cart is empty! Add some fresh items.'); return; }
+        const waMessage = generateWhatsAppText();
+        if(waMessage){ window.open(`https://wa.me/916265640804?text=${waMessage}`, '_blank'); saveOrderHistory(); }
+    });
+    
+    // Mobile menu
+    window.scrollToShop = function(){ document.getElementById('productList').scrollIntoView({ behavior: 'smooth' }); closeMobileMenu(); };
+    window.showAbout = function(){ alert("🌿 FreshBasket Story\n\nWe bring the freshest groceries from local farms to your doorstep. Quality, purity & taste — since 2024."); closeMobileMenu(); };
+    window.showContact = function(){ alert("📞 Need help?\nCall: +91 62656 40804\nEmail: hello@freshbasket.com\nLive chat available 9am-8pm."); closeMobileMenu(); };
+    window.showCartInfo = function(){ if(shoppingCart.size===0) alert("Your cart is empty. Start adding delicious items!"); else openCartModal(); closeMobileMenu(); };
+    function closeMobileMenu(){ const menu = document.getElementById('navMenu'); if(menu) menu.classList.remove('active'); }
+    document.getElementById('menuToggle')?.addEventListener('click', () => document.getElementById('navMenu')?.classList.toggle('active'));
+    document.addEventListener('click', (e) => { if(!e.target.closest('.header') && document.getElementById('navMenu')?.classList.contains('active')) closeMobileMenu(); });
+
+    // Admin hover mini login
+    let adminMiniTimeout;
+    function showAdminMini() {
+        if(!adminMiniLogin || !adminLink) return;
+        const rect = adminLink.getBoundingClientRect();
+        adminMiniLogin.style.left = `${rect.left}px`;
+        adminMiniLogin.style.top = `${rect.bottom + 10}px`;
+        adminMiniLogin.style.display = 'block';
+        adminHoverMode = true;
+        authModalDiv.classList.remove('active');
+    }
+
+    function hideAdminMini() {
+        if(!adminMiniLogin) return;
+        adminMiniLogin.style.display = 'none';
+        adminHoverMode = false;
+    }
+
+    adminLink?.addEventListener('mouseenter', () => {
+        clearTimeout(adminMiniTimeout);
+        showAdminMini();
+    });
+
+    adminLink?.addEventListener('mouseleave', () => {
+        adminMiniTimeout = setTimeout(hideAdminMini, 220);
+    });
+
+    adminMiniLogin?.addEventListener('mouseenter', () => {
+        clearTimeout(adminMiniTimeout);
+    });
+
+    adminMiniLogin?.addEventListener('mouseleave', () => {
+        adminMiniTimeout = setTimeout(hideAdminMini, 220);
+    });
+
+    adminLink?.addEventListener('click', (e) => { e.preventDefault(); });
+
+    adminMiniForm?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const user = adminMiniUser.value.trim();
+        const pwd = adminMiniPass.value;
+        if(user === 'user124' && pwd === '12345') {
+            window.location.href = 'admin.html';
+        } else {
+            alert('Invalid admin credentials. Use user124 / 12345.');
+            adminMiniPass.focus();
+        }
+    });
+
+    // User hover mini login
+    let userMiniTimeout;
+    function showUserMini() {
+        if(loggedIn || !userMiniLogin || !loginBtnHeader) return;
+        const rect = loginBtnHeader.getBoundingClientRect();
+        userMiniLogin.style.left = `${rect.left - 270}px`;
+        userMiniLogin.style.top = `${rect.top}px`;
+        userMiniLogin.style.display = 'block';
+    }
+
+    function hideUserMini() {
+        if(!userMiniLogin) return;
+        userMiniLogin.style.display = 'none';
+    }
+
+    loginBtnHeader?.addEventListener('mouseenter', () => {
+        if(!loggedIn) {
+            clearTimeout(userMiniTimeout);
+            showUserMini();
+        }
+    });
+
+    loginBtnHeader?.addEventListener('mouseleave', () => {
+        if(!loggedIn) {
+            userMiniTimeout = setTimeout(hideUserMini, 220);
+        }
+    });
+
+    userMiniLogin?.addEventListener('mouseenter', () => {
+        clearTimeout(userMiniTimeout);
+    });
+
+    userMiniLogin?.addEventListener('mouseleave', () => {
+        userMiniTimeout = setTimeout(hideUserMini, 220);
+    });
+
+    userMiniForm?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = userMiniEmail.value.trim();
+        const pwd = userMiniPass.value;
+        if(email && pwd) {
+            loggedIn = true;
+            currentUserName = email.includes('@') ? email.split('@')[0] : email;
+            loginBtnHeader.innerHTML = `<i class="fas fa-user"></i> Hi ${currentUserName}`;
+            loginBtnHeader.title = 'Click to logout';
+            alert(`🍃 Welcome back, ${currentUserName}! Enjoy fresh deals.`);
+            hideUserMini();
+        } else {
+            alert('Please enter valid credentials.');
+        }
+    });
+    
+    // Socials
+    document.getElementById('fbSocial')?.addEventListener('click',e=>{e.preventDefault(); window.open('https://facebook.com/freshbasket','_blank');});
+    document.getElementById('twitterSocial')?.addEventListener('click',e=>{e.preventDefault(); window.open('https://twitter.com/freshbasket','_blank');});
+    document.getElementById('waSocial')?.addEventListener('click',e=>{e.preventDefault(); window.open('https://wa.me/916265640804','_blank');});
+    
+    // Auth System
+    window.toggleAuthForms = function(){
+        document.getElementById('loginFormSection').classList.toggle('active');
+        document.getElementById('registerFormSection').classList.toggle('active');
+        document.getElementById('modalTitle').innerText = document.getElementById('loginFormSection').classList.contains('active') ? 'Welcome back' : 'Join FreshBasket';
+    };
+    window.handleUserLogin = function(e){
+        e.preventDefault();
+        const email = document.getElementById('loginEmailInput').value.trim();
+        const pwd = document.getElementById('loginPasswordInput').value;
+
+        if(adminHoverMode){
+            if(email === 'user124' && pwd === '12345'){
+                alert('🔐 Admin access granted. Redirecting to admin panel.');
+                window.location.href = 'admin.html';
+            } else {
+                alert('Invalid admin credentials. Use user124 / 12345.');
+            }
+            return;
+        }
+
+        if(email && pwd){
+            loggedIn = true;
+            currentUserName = email.includes('@') ? email.split('@')[0] : email;
+            authModalDiv.classList.remove('active');
+            loginBtnHeader.innerHTML = `<i class="fas fa-user"></i> Hi ${currentUserName}`;
+            loginBtnHeader.title = 'Click to logout';
+            alert(`🍃 Welcome back, ${currentUserName}! Enjoy fresh deals.`);
+        } else {
+            alert('Please enter valid credentials.');
+        }
+    };
+    window.handleUserRegister = function(e){
+        e.preventDefault();
+        const name = document.getElementById('regFullName').value;
+        const email = document.getElementById('regEmailId').value;
+        const phone = document.getElementById('regPhoneNum').value;
+        const address = document.getElementById('regAddressLine').value;
+        const pass = document.getElementById('regPasswordVal').value;
+        const cpass = document.getElementById('regConfirmPass').value;
+        if(pass !== cpass){ alert('❌ Passwords do not match!'); return; }
+        if(name && email && phone && address){
+            alert(`🎉 Welcome ${name}! Registration successful. Please login.`);
+            toggleAuthForms();
+        } else alert('Please fill all fields.');
+    };
+    loginBtnHeader.addEventListener('click', () => {
+        if(loggedIn){
+            loggedIn = false;
+            currentUserName = '';
+            loginBtnHeader.innerHTML = '<i class="fas fa-user-plus"></i> Account';
+            loginBtnHeader.title = '';
+            alert('Logged out successfully.');
+        } else {
+            authModalDiv.classList.add('active');
+        }
+    });
+    closeModalBtn.addEventListener('click', () => { authModalDiv.classList.remove('active'); adminHoverMode = false; document.getElementById('modalTitle').innerText = 'Welcome back'; });
+    authModalDiv.addEventListener('click', (e) => { if(e.target === authModalDiv) { authModalDiv.classList.remove('active'); adminHoverMode = false; document.getElementById('modalTitle').innerText = 'Welcome back'; } });
+    
+    // Initial Render
+    renderCategoriesUI();
+    renderProductsGrid();
+    updateCartTotalUI();
+    updateClearButtonVisibility();
+</script>
+</body>
+</html>
